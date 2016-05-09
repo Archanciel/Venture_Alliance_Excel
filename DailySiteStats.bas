@@ -10,9 +10,13 @@ Attribute retrieveData.VB_ProcData.VB_Invoke_Func = " \n14"
 '
     Dim beforeLastRowHeadCell As Range
     Dim lastRowHeadCell As Range
+    Dim lastRowFormulaCell As Range
     Dim nextRowHeadCell As Range
     Dim lastRowRange As Range
+    Dim lastRowFormulaRange As Range
     Dim nextRowRange As Range
+    
+    'handling historical data part
     
     Set lastRowHeadCell = Cells(getLastDataRow(Range("A1:A1")), 1)
     Set beforeLastRowHeadCell = lastRowHeadCell.Offset(-1, 0)
@@ -43,6 +47,17 @@ Attribute retrieveData.VB_ProcData.VB_Invoke_Func = " \n14"
     lastRowRange.Select
     Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
         :=False, Transpose:=False
+    
+    'handling formula part
+    
+    Set lastRowFormulaCell = Cells(getLastDataRow(Range("G4:G4")), 7)
+    Set lastRowFormulaRange = Range(lastRowFormulaCell, lastRowFormulaCell.Offset(0, 7))
+    
+    lastRowFormulaRange.Select
+    Selection.Copy
+    lastRowFormulaRange.Offset(1, 0).Select
+    ActiveSheet.Paste
+    
     Application.CutCopyMode = False
     clearAnySelection
 End Sub
